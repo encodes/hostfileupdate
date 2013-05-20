@@ -1,7 +1,7 @@
 __author__ = 'Jason Vanzin'
 import sys #used to get commandline arguments
 import re #used for regular expressions
-
+posix = ['linux','darwin']
 
 def exists(hostname):
     """ str -> bool
@@ -11,7 +11,8 @@ def exists(hostname):
     :param hostname:
     :return:
     """
-    if 'linux' in sys.platform:
+
+    if sys.platform in posix:
         filename = '/etc/hosts'
     else:
         filename = 'c:\windows\system32\drivers\etc\hosts'
@@ -20,23 +21,32 @@ def exists(hostname):
     f.close()
     for item in hostfiledata:
         if hostname in item:
-            return True
+            return item.index(hostname)
     return False
 
 
-def update(ipaddress, hostname):
+def update(ipaddress, hostname, line = None):
     """
     The update function takes the ip address and hostname passed into the function and adds it to the host file.
     :param ipaddress:
     :param hostname:
     """
-    if 'linux' in sys.platform:
+    if sys.platform in posix:
         filename = '/etc/hosts'
     else:
         filename = 'c:\windows\system32\drivers\etc\hosts'
-    outputfile = open(filename, 'a')
     entry = "\n" + ipaddress + "\t" + hostname + "\n"
-    outputfile.writelines(entry)
+    if line == None:
+        outputfile = open(filename, 'a')
+        outputfile.writelines(entry)
+    else:
+        # we open the file to create the contents and then update the specific line
+        outputfile = open(filename, 'r')
+        data = outputfile.readlines()
+        outputfile.close()
+        outputfile = open(filename, 'w')
+        data[line] = entry
+        outputfile.writelines(data)
     outputfile.close()
 
 
@@ -95,8 +105,10 @@ def main():
         print(hostname, "is not a valid hostname. Usage: hostfileupdate.py [ipadddress] [hostmame]")
         sys.exit(2)
 
-    if exists(hostname): #checks to see if the host name already exists in the host file and exits if it does.
+    line = exists(hostname)
+    if line != False: #checks to see if the host name already exists in the host file and exits if it does.
         print(hostname, 'already exists in the hostfile.')
+    update(ipaddress, hostname, line = line)
         sys.exit(2)
 
     update(ipaddress, hostname) #Calls the update function.
