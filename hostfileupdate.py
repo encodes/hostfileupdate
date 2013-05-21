@@ -18,9 +18,11 @@ def exists(hostname):
     f = open(filename, 'r')
     hostfiledata = f.readlines()
     f.close()
+    x = 0
     for item in hostfiledata:
         if hostname in item:
-            return item.index(hostname)
+            return x		
+        x = x + 1
     return False
 
 
@@ -40,6 +42,7 @@ def update(ipaddress, hostname, line = None):
         outputfile.writelines(entry)
     else:
         # we open the file to create the contents and then update the specific line
+        entry = ipaddress + "\t" + hostname + "\n"
         outputfile = open(filename, 'r')
         data = outputfile.readlines()
         outputfile.close()
@@ -106,8 +109,7 @@ def main():
 
     line = exists(hostname)
     if line != False: #checks to see if the host name already exists in the host file and exits if it does.
-        print(hostname, 'already exists in the hostfile.')
-    update(ipaddress, hostname, line = line)
+        update(ipaddress, hostname, line = line)
         sys.exit(2)
 
     update(ipaddress, hostname) #Calls the update function.
