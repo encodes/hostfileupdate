@@ -1,7 +1,6 @@
 __author__ = 'Jason Vanzin'
 import sys #used to get commandline arguments
 import re #used for regular expressions
-posix = ['linux','darwin']
 
 def exists(hostname):
     """ str -> bool
@@ -12,10 +11,10 @@ def exists(hostname):
     :return:
     """
 
-    if sys.platform in posix:
-        filename = '/etc/hosts'
-    else:
+    if sys.platform == 'win32':
         filename = 'c:\windows\system32\drivers\etc\hosts'
+    else:
+        filename = '/etc/hosts'
     f = open(filename, 'r')
     hostfiledata = f.readlines()
     f.close()
@@ -31,10 +30,10 @@ def update(ipaddress, hostname, line = None):
     :param ipaddress:
     :param hostname:
     """
-    if sys.platform in posix:
-        filename = '/etc/hosts'
-    else:
+    if sys.platform == 'win32':
         filename = 'c:\windows\system32\drivers\etc\hosts'
+    else:
+        filename = '/etc/hosts'
     entry = "\n" + ipaddress + "\t" + hostname + "\n"
     if line == None:
         outputfile = open(filename, 'a')
