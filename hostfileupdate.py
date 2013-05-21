@@ -100,11 +100,11 @@ def main():
     ipaddress = args[-2]
 
     if not validIP(ipaddress): #checks the IP address to see if it's valid.
-        print(ipaddress, "is not a valid IP address. Usage: hostfileupdate.py [ipadddress] [hostmame]")
+        print(ipaddress, "is not a valid IP address. Usage: hostfileupdate.py [ipadddress] [hostname]")
         sys.exit(2)
 
     if not isValidHostname(hostname): #checks the host name to see if it's valid.
-        print(hostname, "is not a valid hostname. Usage: hostfileupdate.py [ipadddress] [hostmame]")
+        print(hostname, "is not a valid hostname. Usage: hostfileupdate.py [ipadddress] [hostname]")
         sys.exit(2)
 
     line = exists(hostname)
@@ -117,8 +117,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
 

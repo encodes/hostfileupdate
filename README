@@ -1,1 +1,8 @@
-This file was created by PyCharm 2.7.2 for binding GitHub repository
+## Usage
+hostfileupdate.py [ipadddress] [hostname]
+
+## Notes
+* On win32 systems it needs administrator privileges
+* on a Linux system it needs to be ran as root/sudo
+* if a hostname exists it will update
+* if a hostname does not exist it will append it to the system
